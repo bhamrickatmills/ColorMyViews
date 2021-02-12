@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <style name="whiteBox">
-        <item name="android:background">@android:color/holo_green_light</item>
-        <item name="android:textAlignment"></item>
-    </style>
-</resources>
