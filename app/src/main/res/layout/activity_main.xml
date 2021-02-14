@@ -142,6 +142,7 @@
             android:id="@+id/yellow_button"
             style="@style/whiteBox"
             android:backgroundTint="@color/my_yellow"
+            android:textColor="@color/black"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/button_yellow"

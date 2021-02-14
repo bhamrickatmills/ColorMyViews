@@ -51,12 +51,12 @@ class MainActivity : AppCompatActivity() {
         val rootConstraintLayout = binding.constraintLayout
         val clickableViews: List<View> = boxes
         rootConstraintLayout.setOnClickListener{makeColored(rootConstraintLayout)}
-        for (view in clickableViews) {
-            view.setOnClickListener { makeColored(it)}
+        clickableViews.forEach { it.setOnClickListener{makeColored(it)}}
+        binding.apply {
+            redButton.setOnClickListener { clickToColor(RED) }
+            yellowButton.setOnClickListener { clickToColor(YELLOW) }
+            greenButton.setOnClickListener { clickToColor(GREEN) }
         }
-        binding.redButton.setOnClickListener{clickToColor(RED)}
-        binding.yellowButton.setOnClickListener{clickToColor(YELLOW)}
-        binding.greenButton.setOnClickListener{clickToColor(GREEN)}
     }
 
     /*
