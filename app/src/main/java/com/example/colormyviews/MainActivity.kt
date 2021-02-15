@@ -13,7 +13,7 @@ import kotlin.random.nextInt
 private lateinit var binding: ActivityMainBinding
 
 private lateinit var boxes: List<TextView>
-private val randomColors: List<Int> = listOf(Color.RED, Color.GRAY, Color.BLUE, Color.MAGENTA, Color.LTGRAY, Color.CYAN, Color.GREEN, Color.BLACK, Color.WHITE)
+private val randomColors: List<Int> = listOf(Color.RED, Color.GRAY, Color.BLUE, Color.MAGENTA, Color.LTGRAY, Color.CYAN, Color.GREEN, Color.BLACK)
 private var RED: Int = 0
 private var YELLOW: Int = 0
 private var GREEN: Int = 0
@@ -22,11 +22,18 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        boxes = listOf(binding.boxOneText, binding.boxTwoText, binding.boxThreeText, binding.boxFourText, binding.boxFiveText)
+        setColors()
+        setListeners()
+    }
+
+    /*
+     * Set color values.
+     */
+    private fun setColors() {
         RED = R.color.my_red
         YELLOW = R.color.my_yellow
         GREEN = R.color.my_green
-        boxes = listOf(binding.boxOneText, binding.boxTwoText, binding.boxThreeText, binding.boxFourText, binding.boxFiveText)
-        setListeners()
     }
 
     /*
@@ -35,11 +42,7 @@ class MainActivity : AppCompatActivity() {
     private fun makeColored(view: View) {
         val randInt = Random.nextInt(randomColors.indices)
         when (view.id) {
-            binding.boxOneText.id -> view.setBackgroundColor(randomColors[randInt])
-            binding.boxTwoText.id -> view.setBackgroundColor(randomColors[randInt])
-            binding.boxThreeText.id -> view.setBackgroundColor(randomColors[randInt])
-            binding.boxFourText.id -> view.setBackgroundColor(randomColors[randInt])
-            binding.boxFiveText.id -> view.setBackgroundColor(randomColors[randInt])
+            boxes[0].id, boxes[1].id, boxes[2].id, boxes[3].id, boxes[4].id -> view.setBackgroundColor(randomColors[randInt])
             else ->  view.setBackgroundColor(randomColors[randInt])
         }
     }
@@ -48,29 +51,24 @@ class MainActivity : AppCompatActivity() {
      * Initialize listeners.
      */
     private fun setListeners() {
-        val rootConstraintLayout = binding.constraintLayout
-        val clickableViews: List<View> = boxes
-        rootConstraintLayout.setOnClickListener{makeColored(rootConstraintLayout)}
-        clickableViews.forEach { it.setOnClickListener{makeColored(it)}}
         binding.apply {
             redButton.setOnClickListener { clickToColor(RED) }
             yellowButton.setOnClickListener { clickToColor(YELLOW) }
             greenButton.setOnClickListener { clickToColor(GREEN) }
+            constraintLayout.setOnClickListener { makeColored(constraintLayout) }
         }
+        boxes.forEach { it.setOnClickListener { makeColored(it) } }
     }
 
     /*
-     * Change the color of a random text box on screen.
+     * Change the color of a random text box on screen and randomize box size.
      */
-    private fun clickToColor(c: Int){
-        val randBox = boxes[Random.nextInt(boxes.indices)]
-        if(c == YELLOW){
-            randBox.setTextColor(Color.BLACK)
-        } else {
-            randBox.setTextColor(Color.WHITE)
+    private fun clickToColor(c: Int) {
+        boxes[Random.nextInt(boxes.indices)].apply {
+            setTextColor(if (c == YELLOW) Color.BLACK else Color.WHITE)
+            setBackgroundResource(c)
+            scaleX = Random.nextFloat() + Random.nextInt(0..2)
+            scaleY = Random.nextFloat() + Random.nextInt(0..2)
         }
-        randBox.setBackgroundResource(c)
-        randBox.scaleX = Random.nextFloat() + Random.nextInt(0..2)
-        randBox.scaleY = Random.nextFloat() + Random.nextInt(0..2)
     }
 }
